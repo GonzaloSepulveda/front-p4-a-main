@@ -36,13 +36,20 @@ export const handler: Handlers = {
           title: typeof title === "string" ? "" : "Título inválido",
           content: typeof content === "string" ? "" : "Contenido inválido",
           author: typeof author === "string" ? "" : "Autor inválido",
-          cover: cover === null || typeof cover === "string" ? "" : "URL inválida",
+          cover: cover === null || typeof cover === "string"
+            ? ""
+            : "URL inválida",
         },
       });
     }
 
     try {
-      await axios.post(`https://back-p5-y0e1.onrender.com/api/posts/`, { title, content, author, cover }); //Cambiado el link
+      await axios.post(`https://back-p5-y0e1.onrender.com/api/posts/`, {
+        title,
+        content,
+        author,
+        cover,
+      }); //Cambiado el link
 
       const headers = new Headers();
       headers.set("location", "/");
@@ -68,12 +75,10 @@ export const handler: Handlers = {
         }
       }
 
-      
-
       return ctx.render({
         errors: {
           title: "Ha habido un error al crear el post",
-          content:"Ha habido un error al crear el post",
+          content: "Ha habido un error al crear el post",
           author: "Ha habido un error al crear el post",
           cover: "Ha habido un error al crear el post",
         },
@@ -165,9 +170,12 @@ export default function Create({ data }: PageProps) {
           <button type="submit" className="submit-button">
             Publicar Post
           </button>
-          <button type="button" className="cancel-button">
-            Cancelar
-          </button>
+
+          <a href="/"> {/*Boton no funcionaba*/}
+            <button type="button" className="cancel-button">
+              Cancelar
+            </button>
+          </a>
         </div>
       </form>
     </div>
