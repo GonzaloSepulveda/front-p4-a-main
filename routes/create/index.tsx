@@ -4,7 +4,7 @@ import {
   hasValidationErrors,
   isApiResponseError,
 } from "../../models/api_response.ts";
-
+//Muchas variables fueron cambiadas a ingles
 interface FormDataError {
   title?: string;
   content?: string;
