@@ -1,6 +1,6 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import axios from "axios";
-import { API_BASE_URL } from "../utils/config.ts";
+
 import { ApiResponseSuccess } from "../models/api_response.ts";
 import Post from "../models/post.ts";
 import { useSignal } from "@preact/signals";

@@ -7,16 +7,19 @@ interface HomeProps {
   posts: Post[];
 }
 
-export default function MainView({ isGrid, posts }: HomeProps) {
+export default function MainView({ isGrid, posts }: HomeProps) { //Faltaba por invertir el valor al hacer onClick
   return (
     <div className="main-view-container">
       <div className="view-toggle">
-        <button
+        <button 
           type="button"
           className={`toggle-button ${isGrid.value ? "active" : ""}`}
           title={isGrid.value
             ? "Cambiar a vista de lista"
             : "Cambiar a vista de cuadrícula"}
+          onClick={() => {
+            isGrid.value = !isGrid.value;
+          }}
         >
           {isGrid.value ? "☰ Lista" : "⏹️ Cuadrícula"}
         </button>
