@@ -1,22 +1,26 @@
 import { Handlers } from "$fresh/server.ts";
 import PostComponent from "../../components/Post.tsx";
 import Post from "../../models/post.ts";
-import { API_BASE_URL } from "../../utils/config.ts";
 import { ApiResponseSuccess } from "../../models/api_response.ts";
-import axios from "npm:axios@1.6.2";
+
+
+//Cambiados los nombres de las variables para hacer bien la busqueda
+
+//uso ? search
+//axios quitado para unas comprobaciones
+
 
 export const handler: Handlers = {
   async GET(_req, ctx) {
     try {
       const { url } = _req;
       const searchParams = new URL(url).searchParams;
-      const search = searchParams.get("search");
-      if (!search || search.trim() === "") {
-        return ctx.render({ posts: [], search });
+      const query = searchParams.get("search");
+      if (!query || query.trim() === "") {
+        return ctx.render({ posts: [], query });
       }
-      const { data } = await axios.get<ApiResponseSuccess<Post[]>>(
-        `${API_BASE_URL}/api/posts?search=${search}`,
-      );
+      const response = await fetch(`https://back-p5-y0e1.onrender.com/api/posts?search=${query}`); //Link cambiado
+      const data: ApiResponseSuccess<Post[]> = await response.json();
       return ctx.render({ posts: data.data.posts });
     } catch (_) {
       return ctx.render({ posts: [] });
@@ -27,14 +31,14 @@ export const handler: Handlers = {
 interface SearchProps {
   data: {
     posts: Post[];
-    search?: string;
+    query?: string;
   };
 }
 
 export default function Search({ data }: SearchProps) {
-  const { posts, search = "" } = data;
+  const { posts, query = "" } = data;
   const hasResults = posts.length > 0;
-  const searchTerm = search || "";
+  const searchTerm = query || "";
 
   return (
     <div className="search-container">
@@ -42,10 +46,9 @@ export default function Search({ data }: SearchProps) {
         <h1>Buscar publicaciones</h1>
         <form action="/search" method="get" className="search-form">
           <div className="search-input-container">
-            {/*Cambiado el name a search*/}
             <input
               type="text"
-              name="search" 
+              name="search"
               placeholder="Buscar por título o autor..."
               value={searchTerm}
               className="search-input"
